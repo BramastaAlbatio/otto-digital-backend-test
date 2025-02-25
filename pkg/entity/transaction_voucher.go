@@ -28,3 +28,13 @@ func (transactionVoucers TransactionVouchers) GetIDs() []string {
 	}
 	return ids
 }
+
+func (transactionVouchers TransactionVouchers) GetTransactionIDS() []string {
+	var ids []string
+
+	for _, transactionVoucher := range transactionVouchers {
+		ids = append(ids, transactionVoucher.TransactionID)
+	}
+
+	return ids
+}

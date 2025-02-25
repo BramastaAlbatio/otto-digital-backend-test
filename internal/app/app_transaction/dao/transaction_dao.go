@@ -96,6 +96,7 @@ func (d transactionDAO) Insert(ctx context.Context, transactions entity.Transact
 	sqlStr := sql.BuildSQL()
 	sqlParams := sql.GetSQLGoParameter().GetSQLParameter()
 	_, err := d.dbTrx.GetSqlTx().ExecContext(ctx, sqlStr, sqlParams...)
+	fmt.Println("=======================================", sqlStr, sqlParams)
 	if err != nil {
 		return err
 	}

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"otto-digital-backend-test/internal/app/app_transaction/dao"
 	entity "otto-digital-backend-test/pkg/entity"
@@ -39,9 +40,30 @@ func (s transactionService) Insert(ctx context.Context, transactions entity.Tran
 	dbTrx := dao.NewTransaction(ctx, s.sqlDB)
 	defer dbTrx.GetSqlTx().Rollback()
 
-	err := dbTrx.GetTransactionDAO().Insert(ctx, transactions)
-	if err != nil {
-		return err
+	// Loop setiap transaksi
+	for _, transaction := range transactions {
+		// Ambil data voucher sekali saja
+		vouchers, err := dbTrx.GetVoucherDAO().Search(ctx, entity.VoucherQuery{})
+		if err != nil || len(vouchers) == 0 {
+			return errors.New("vouchers not found")
+		}
+
+		// Hitung total poin transaksi
+		if err := transaction.CalculateTotalPoints(vouchers); err != nil {
+			return err
+		}
+
+		// Simpan transaksi utama terlebih dahulu
+		if err := dbTrx.GetTransactionDAO().Insert(ctx, entity.Transactions{transaction}); err != nil {
+			return err
+		}
+
+		transactionVouchers := transaction.GetTransactionVouchers()
+
+		// Simpan detail voucher transaksi
+		if err := dbTrx.GetTransactionVoucherDAO().Insert(ctx, transactionVouchers); err != nil {
+			return err
+		}
 	}
 
 	if err := dbTrx.GetSqlTx().Commit(); err != nil {
