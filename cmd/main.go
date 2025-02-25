@@ -17,6 +17,8 @@ import (
 	brandService "otto-digital-backend-test/internal/app/app_brand/service"
 
 	customerService "otto-digital-backend-test/internal/app/app_customer/service"
+
+	voucherService "otto-digital-backend-test/internal/app/app_voucher/service"
 	"otto-digital-backend-test/internal/app/router"
 
 	"gitlab.com/threetopia/envgo"
@@ -42,8 +44,9 @@ func main() {
 
 	brandSrv := brandService.MakeBrandService(psqlDB.GetSQLDB())
 	customerSrv := customerService.MakeCustomerService(psqlDB.GetSQLDB())
+	voucherSrv := voucherService.MakeVoucherService(psqlDB.GetSQLDB())
 
-	router := router.MakeRouter(brandSrv, customerSrv)
+	router := router.MakeRouter(brandSrv, customerSrv, voucherSrv)
 
 	newRouter := router.InitRouter()
 

@@ -5,6 +5,8 @@ import (
 	brandService "otto-digital-backend-test/internal/app/app_brand/service"
 	customerAdapter "otto-digital-backend-test/internal/app/app_customer/adapter"
 	customerService "otto-digital-backend-test/internal/app/app_customer/service"
+	voucherAdapter "otto-digital-backend-test/internal/app/app_voucher/adapter"
+	voucherService "otto-digital-backend-test/internal/app/app_voucher/service"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -15,16 +17,21 @@ type Router struct {
 	brandAdapter    brandAdapter.BrandAdapter
 	customerService customerService.CustomerService
 	customerAdapter customerAdapter.CustomerAdapter
+	voucherService  voucherService.VoucherService
+	voucherAdapter  voucherAdapter.VoucherAdapter
 }
 
 func MakeRouter(
 	brandService brandService.BrandService,
-	customerService customerService.CustomerService) Router {
+	customerService customerService.CustomerService,
+	voucherService voucherService.VoucherService) Router {
 	return Router{
 		brandService:    brandService,
 		brandAdapter:    brandAdapter.MakeBrandAdapter(brandService),
 		customerService: customerService,
 		customerAdapter: customerAdapter.MakeCustomerAdapter(customerService),
+		voucherService:  voucherService,
+		voucherAdapter:  voucherAdapter.MakeVoucherAdapter(voucherService),
 	}
 }
 
@@ -58,6 +65,14 @@ func (r Router) InitRouter() *echo.Echo {
 	e.PUT("/customers", r.customerAdapter.UpdateCustomers)
 	e.PUT("/customer", r.customerAdapter.UpdateCustomer)
 	e.DELETE("/customers", r.customerAdapter.DeleteCustomer)
+
+	// Voucher Handler
+	e.GET("/voucher", r.voucherAdapter.SearchVoucher)
+	e.POST("/vouchers", r.voucherAdapter.InsertVouchers)
+	e.POST("/voucher", r.voucherAdapter.InsertVoucher)
+	e.PUT("/vouchers", r.voucherAdapter.UpdateVouchers)
+	e.PUT("/voucher", r.voucherAdapter.UpdateVoucher)
+	e.DELETE("/vouchers", r.voucherAdapter.DeleteVoucher)
 
 	return e
 }
