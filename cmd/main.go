@@ -15,6 +15,8 @@ import (
 	"github.com/joho/godotenv"
 
 	brandService "otto-digital-backend-test/internal/app/app_brand/service"
+
+	customerService "otto-digital-backend-test/internal/app/app_customer/service"
 	"otto-digital-backend-test/internal/app/router"
 
 	"gitlab.com/threetopia/envgo"
@@ -39,8 +41,9 @@ func main() {
 	psqlDB.Migration()
 
 	brandSrv := brandService.MakeBrandService(psqlDB.GetSQLDB())
+	customerSrv := customerService.MakeCustomerService(psqlDB.GetSQLDB())
 
-	router := router.MakeRouter(brandSrv)
+	router := router.MakeRouter(brandSrv, customerSrv)
 
 	newRouter := router.InitRouter()
 

@@ -31,10 +31,10 @@ func MakeBrandDAO(dbTrx DBTransaction) BrandDAO {
 
 func (d brandDAO) Search(ctx context.Context, query entity.BrandQuery) (entity.Brands, error) {
 	sqlSelect := sqlgo.NewSQLGoSelect().
-		SetSQLSelect("u.id", "id").
-		SetSQLSelect("u.name", "name").
-		SetSQLSelect("u.created_at", "created_at").
-		SetSQLSelect("u.updated_at", "updated_at")
+		SetSQLSelect("b.id", "id").
+		SetSQLSelect("b.name", "name").
+		SetSQLSelect("b.created_at", "created_at").
+		SetSQLSelect("b.updated_at", "updated_at")
 
 	sqlFrom := sqlgo.NewSQLGoFrom().
 		SetSQLFrom(`"brand"`, "b")
@@ -97,7 +97,6 @@ func (d brandDAO) Insert(ctx context.Context, brands entity.Brands) error {
 	sqlStr := sql.BuildSQL()
 	sqlParams := sql.GetSQLGoParameter().GetSQLParameter()
 	_, err := d.dbTrx.GetSqlTx().ExecContext(ctx, sqlStr, sqlParams...)
-	fmt.Println("=====================", sqlStr, sqlParams)
 	if err != nil {
 		return err
 	}
