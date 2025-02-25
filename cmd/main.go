@@ -15,11 +15,11 @@ import (
 	"github.com/joho/godotenv"
 
 	brandService "otto-digital-backend-test/internal/app/app_brand/service"
-
 	customerService "otto-digital-backend-test/internal/app/app_customer/service"
-
 	transactionService "otto-digital-backend-test/internal/app/app_transaction/service"
+	transactionVoucherService "otto-digital-backend-test/internal/app/app_transaction_voucher/service"
 	voucherService "otto-digital-backend-test/internal/app/app_voucher/service"
+
 	"otto-digital-backend-test/internal/app/router"
 
 	"gitlab.com/threetopia/envgo"
@@ -47,8 +47,9 @@ func main() {
 	customerSrv := customerService.MakeCustomerService(psqlDB.GetSQLDB())
 	voucherSrv := voucherService.MakeVoucherService(psqlDB.GetSQLDB())
 	transactionSrv := transactionService.MakeTransactionService(psqlDB.GetSQLDB())
+	transactionVoucherSrv := transactionVoucherService.MakeTransactionVoucherService(psqlDB.GetSQLDB())
 
-	router := router.MakeRouter(brandSrv, customerSrv, voucherSrv, transactionSrv)
+	router := router.MakeRouter(brandSrv, customerSrv, voucherSrv, transactionSrv, transactionVoucherSrv)
 
 	newRouter := router.InitRouter()
 
