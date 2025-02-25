@@ -18,6 +18,7 @@ import (
 
 	customerService "otto-digital-backend-test/internal/app/app_customer/service"
 
+	transactionService "otto-digital-backend-test/internal/app/app_transaction/service"
 	voucherService "otto-digital-backend-test/internal/app/app_voucher/service"
 	"otto-digital-backend-test/internal/app/router"
 
@@ -45,8 +46,9 @@ func main() {
 	brandSrv := brandService.MakeBrandService(psqlDB.GetSQLDB())
 	customerSrv := customerService.MakeCustomerService(psqlDB.GetSQLDB())
 	voucherSrv := voucherService.MakeVoucherService(psqlDB.GetSQLDB())
+	transactionSrv := transactionService.MakeTransactionService(psqlDB.GetSQLDB())
 
-	router := router.MakeRouter(brandSrv, customerSrv, voucherSrv)
+	router := router.MakeRouter(brandSrv, customerSrv, voucherSrv, transactionSrv)
 
 	newRouter := router.InitRouter()
 
