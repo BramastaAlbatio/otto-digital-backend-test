@@ -3,7 +3,7 @@ CREATE TABLE transaction (
     customer_id uuid NOT NULL,
     total_points INT NOT NULL,
     created_at timestamptz NOT NULL DEFAULT NOW(),
-    updated_at timestamptz NOT NULL,
+    updated_at timestamptz NULL,
     CONSTRAINT transaction_pkey PRIMARY KEY(id), 
     CONSTRAINT transaction_customer_fk FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
