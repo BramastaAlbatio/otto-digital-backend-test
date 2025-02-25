@@ -84,8 +84,8 @@ func (d customerDAO) Insert(ctx context.Context, customers entity.Customers) err
 	}
 
 	sqlInsert := sqlgo.NewSQLGoInsert()
-	sqlInsert.SetSQLInsert("Customer")
-	sqlInsert.SetSQLInsertColumn("id", "name", "created_at")
+	sqlInsert.SetSQLInsert("customer")
+	sqlInsert.SetSQLInsertColumn("id", "name", "email", "created_at")
 	for i, customer := range customers {
 		customer.ID = util.MakeUUIDv4()
 		customer.CreatedAt = time.Now()

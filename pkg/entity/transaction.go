@@ -10,7 +10,7 @@ type (
 	Transaction struct {
 		ID          string     `json:"id"`
 		CustomerID  string     `json:"customerId"`
-		TotalPoints int        `json:"totalPoints"`
+		TotalPoints int        `json:"totalPoint"`
 		CreatedAt   time.Time  `json:"createdAt"`
 		UpdatedAt   *time.Time `json:"updatedAt"`
 	}

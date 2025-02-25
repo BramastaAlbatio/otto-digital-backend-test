@@ -35,7 +35,7 @@ func (d transactionVoucherDAO) Search(ctx context.Context, query entity.Transact
 		SetSQLSelect("tv.transaction_id", "transaction_id").
 		SetSQLSelect("tv.voucher_id", "voucher_id").
 		SetSQLSelect("tv.quantity", "quantity").
-		SetSQLSelect("tv.subtotal_points", "subtotal_points").
+		SetSQLSelect("tv.subtotal_point", "subtotal_point").
 		SetSQLSelect("tv.created_at", "created_at").
 		SetSQLSelect("tv.updated_at", "updated_at")
 
@@ -68,7 +68,7 @@ func (d transactionVoucherDAO) Search(ctx context.Context, query entity.Transact
 			&TransactionVoucher.TransactionID,
 			&TransactionVoucher.VoucherID,
 			&TransactionVoucher.Quantity,
-			&TransactionVoucher.SubtotalPoints,
+			&TransactionVoucher.SubtotalPoint,
 			&TransactionVoucher.CreatedAt,
 			&TransactionVoucher.UpdatedAt,
 		); err != nil {
@@ -86,11 +86,11 @@ func (d transactionVoucherDAO) Insert(ctx context.Context, transactionVouchers e
 
 	sqlInsert := sqlgo.NewSQLGoInsert()
 	sqlInsert.SetSQLInsert("transaction_voucher")
-	sqlInsert.SetSQLInsertColumn("id", "transaction_id", "voucher_id", "quantity", "subtotal_points", "created_at")
+	sqlInsert.SetSQLInsertColumn("id", "transaction_id", "voucher_id", "quantity", "subtotal_point", "created_at")
 	for i, transactionVoucher := range transactionVouchers {
 		transactionVoucher.ID = util.MakeUUIDv4()
 		transactionVoucher.CreatedAt = time.Now()
-		sqlInsert.SetSQLInsertValue(transactionVoucher.ID, transactionVoucher.TransactionID, transactionVoucher.VoucherID, transactionVoucher.Quantity, transactionVoucher.SubtotalPoints, transactionVoucher.CreatedAt)
+		sqlInsert.SetSQLInsertValue(transactionVoucher.ID, transactionVoucher.TransactionID, transactionVoucher.VoucherID, transactionVoucher.Quantity, transactionVoucher.SubtotalPoint, transactionVoucher.CreatedAt)
 		transactionVouchers[i] = transactionVoucher
 	}
 	sql := sqlgo.NewSQLGo().
@@ -118,7 +118,7 @@ func (d transactionVoucherDAO) Update(ctx context.Context, transactionVouchers e
 			SetSQLSchema("public").
 			SetSQLUpdate("transaction_voucher").
 			SetSQLUpdateValue("quantity", transactionVoucher.Quantity).
-			SetSQLUpdateValue("subtotal_points", transactionVoucher.SubtotalPoints).
+			SetSQLUpdateValue("subtotal_point", transactionVoucher.SubtotalPoint).
 			SetSQLUpdateValue("updated_at", transactionVoucher.UpdatedAt).
 			SetSQLWhere("AND", "id", "=", transactionVoucher.ID)
 		sqlStr := sql.BuildSQL()

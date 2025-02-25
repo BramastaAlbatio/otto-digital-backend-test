@@ -33,8 +33,7 @@ func (d transactionDAO) Search(ctx context.Context, query entity.TransactionQuer
 	sqlSelect := sqlgo.NewSQLGoSelect().
 		SetSQLSelect("t.id", "id").
 		SetSQLSelect("t.customer_id", "customer_id").
-		SetSQLSelect("t.total_points", "total_points").
-		SetSQLSelect("t.cost_in_point", "cost_in_point").
+		SetSQLSelect("t.total_point", "total_point").
 		SetSQLSelect("t.created_at", "created_at").
 		SetSQLSelect("t.updated_at", "updated_at")
 
@@ -83,7 +82,7 @@ func (d transactionDAO) Insert(ctx context.Context, transactions entity.Transact
 
 	sqlInsert := sqlgo.NewSQLGoInsert()
 	sqlInsert.SetSQLInsert("transaction")
-	sqlInsert.SetSQLInsertColumn("id", "customer_id", "total_points", "created_at")
+	sqlInsert.SetSQLInsertColumn("id", "customer_id", "total_point", "created_at")
 	for i, transaction := range transactions {
 		transaction.ID = util.MakeUUIDv4()
 		transaction.CreatedAt = time.Now()
@@ -114,7 +113,7 @@ func (d transactionDAO) Update(ctx context.Context, transactions entity.Transact
 		sql := sqlgo.NewSQLGo().
 			SetSQLSchema("public").
 			SetSQLUpdate("transaction").
-			SetSQLUpdateValue("total_points", transaction.TotalPoints).
+			SetSQLUpdateValue("total_point", transaction.TotalPoints).
 			SetSQLUpdateValue("updated_at", transaction.UpdatedAt).
 			SetSQLWhere("AND", "id", "=", transaction.ID)
 		sqlStr := sql.BuildSQL()

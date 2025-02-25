@@ -3,7 +3,7 @@ CREATE TABLE transaction_voucher (
     transaction_id uuid NOT NULL,
     voucher_id uuid NOT NULL,
     quantity INT NOT NULL,
-    subtotal_points INT NOT NULL,
+    subtotal_point INT NOT NULL,
     created_at timestamptz NOT NULL DEFAULT NOW(),
     updated_at timestamptz NULL,
     CONSTRAINT transaction_voucher_pkey PRIMARY KEY(id), 

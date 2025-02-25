@@ -48,6 +48,9 @@ func (d voucherDAO) Search(ctx context.Context, query entity.VoucherQuery) (enti
 	if len(query.Names) > 0 {
 		sqlWhere.SetSQLWhere("AND", "v.name", "IN", query.Names)
 	}
+	if len(query.BrandIDs) > 0 {
+		sqlWhere.SetSQLWhere("AND", "v.brand_id", "IN", query.BrandIDs)
+	}
 
 	sql := sqlgo.NewSQLGo().
 		SetSQLSchema("public").
@@ -67,8 +70,8 @@ func (d voucherDAO) Search(ctx context.Context, query entity.VoucherQuery) (enti
 		var Voucher entity.Voucher
 		if err := rows.Scan(
 			&Voucher.ID,
-			&Voucher.Name,
 			&Voucher.BrandID,
+			&Voucher.Name,
 			&Voucher.CostInPoint,
 			&Voucher.CreatedAt,
 			&Voucher.UpdatedAt,
@@ -119,7 +122,7 @@ func (d voucherDAO) Update(ctx context.Context, vouchers entity.Vouchers) error 
 			SetSQLSchema("public").
 			SetSQLUpdate("voucher").
 			SetSQLUpdateValue("name", voucher.Name).
-			SetSQLUpdateValue("email", voucher.CostInPoint).
+			SetSQLUpdateValue("cost_in_point", voucher.CostInPoint).
 			SetSQLUpdateValue("updated_at", voucher.UpdatedAt).
 			SetSQLWhere("AND", "id", "=", voucher.ID)
 		sqlStr := sql.BuildSQL()

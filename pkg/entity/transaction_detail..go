@@ -8,13 +8,13 @@ type (
 	}
 
 	TransactionVoucher struct {
-		ID             string     `json:"id"`
-		TransactionID  string     `json:"transactionId"`
-		VoucherID      string     `json:"voucherId"`
-		Quantity       int        `json:"quantity"`
-		SubtotalPoints int        `json:"subtotalPoints"`
-		CreatedAt      time.Time  `json:"createdAt"`
-		UpdatedAt      *time.Time `json:"updatedAt"`
+		ID            string     `json:"id"`
+		TransactionID string     `json:"transactionId"`
+		VoucherID     string     `json:"voucherId"`
+		Quantity      int        `json:"quantity"`
+		SubtotalPoint int        `json:"subtotalPoint"`
+		CreatedAt     time.Time  `json:"createdAt"`
+		UpdatedAt     *time.Time `json:"updatedAt"`
 	}
 
 	TransactionVouchers []TransactionVoucher

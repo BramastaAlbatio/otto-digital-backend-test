@@ -4,8 +4,9 @@ import "time"
 
 type (
 	VoucherQuery struct {
-		IDs   []string `query:"id"`
-		Names []string `query:"name"`
+		IDs      []string `query:"id"`
+		Names    []string `query:"name"`
+		BrandIDs []string `query:"brand_id"`
 	}
 
 	Voucher struct {
