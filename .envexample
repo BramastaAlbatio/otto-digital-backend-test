@@ -1,0 +1,7 @@
+PORT=6060
+
+DB_USER=your-db-user
+DB_PASS=your-db-password
+DB_DATABASE=otto-digital-test
+DB_SCHEMA=public
+MIGRATION_PATH=your-path

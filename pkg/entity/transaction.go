@@ -17,7 +17,7 @@ type (
 		CreatedAt   time.Time  `json:"createdAt"`
 		UpdatedAt   *time.Time `json:"updatedAt"`
 
-		TransactionVouchers TransactionVouchers `json:"transactionVouchers"`
+		TransactionVoucher TransactionVoucher `json:"transactionVouchers"`
 	}
 
 	Transactions []Transaction
@@ -32,13 +32,13 @@ func (transactions Transactions) GetIDs() []string {
 	return ids
 }
 
-func (transaction Transaction) GetTransactionVouchers() TransactionVouchers {
+func (transactions Transactions) GetTransactionVouchers() TransactionVouchers {
 	var transactionVouchers TransactionVouchers
-	for _, tv := range transaction.TransactionVouchers {
-		tv.TransactionID = transaction.ID
-
-		transactionVouchers = append(transactionVouchers, tv)
+	for _, transaction := range transactions {
+		transaction.TransactionVoucher.TransactionID = transaction.ID
+		transactionVouchers = append(transactionVouchers, transaction.TransactionVoucher)
 	}
+
 	return transactionVouchers
 }
 
@@ -51,14 +51,15 @@ func (t *Transaction) CalculateTotalPoints(vouchers Vouchers) error {
 		voucherMap[v.ID] = v.CostInPoint
 	}
 
-	for i, tv := range t.TransactionVouchers {
-		point, exists := voucherMap[tv.VoucherID]
-		if !exists {
-			return fmt.Errorf("voucher ID %s not found", tv.VoucherID)
-		}
-		t.TransactionVouchers[i].SubtotalPoint = tv.Quantity * point
-		totalPoints += t.TransactionVouchers[i].SubtotalPoint
+	// Pastikan TransactionVoucher memiliki voucher ID yang valid
+	point, exists := voucherMap[t.TransactionVoucher.VoucherID]
+	if !exists {
+		return fmt.Errorf("voucher ID %s not found", t.TransactionVoucher.VoucherID)
 	}
+
+	// Hitung subtotal dan total points
+	t.TransactionVoucher.SubtotalPoint = t.TransactionVoucher.Quantity * point
+	totalPoints += t.TransactionVoucher.SubtotalPoint
 
 	t.TotalPoints = totalPoints
 	return nil
